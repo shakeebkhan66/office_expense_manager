@@ -84,17 +84,19 @@ class _HomePageState extends State<HomePage> {
     totalIncome = 0;
     totalExpense = 0;
     for (TransactionModel data in entireData) {
-      if (data.date.month == today.month) {
-        if (data.type == "Income") {
-          totalBalance += data.amount;
-          totalIncome += data.amount;
-        } else {
-          totalBalance -= data.amount;
-          totalExpense += data.amount;
+        if (data.date.month == today.month) {
+          if (data.type == "Income") {
+            totalBalance += data.amount;
+            totalIncome += data.amount;
+          }
+          else {
+            totalBalance -= data.amount;
+            totalExpense += data.amount;
+          }
         }
-      }
     }
   }
+
 
   // TODO Card Income Widget
   cardIncome(String value) {
@@ -236,10 +238,14 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Row(
                       children: [
-                        Icon(
-                          CupertinoIcons.arrow_up_circle_fill,
-                          size: 28.0,
-                          color: Colors.red,
+                        CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Constants().backgroundColor,
+                          child: Icon(
+                            CupertinoIcons.arrow_up_circle_fill,
+                            size: 28.0,
+                            color: Colors.red,
+                          ),
                         ),
                         const SizedBox(
                           width: 4.0,
@@ -337,10 +343,14 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Row(
                   children: [
-                    Icon(
-                      CupertinoIcons.arrow_down_circle_fill,
-                      size: 28.0,
-                      color: Colors.green,
+                    CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Constants().backgroundColor,
+                      child: const Icon(
+                        CupertinoIcons.arrow_down_circle_fill,
+                        size: 28.0,
+                        color: Colors.green,
+                      ),
                     ),
                     const SizedBox(
                       width: 4.0,
@@ -660,89 +670,89 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(width: 6.0,),
-            // InkWell(
-            //   onTap: () {
-            //     setState(() {
-            //       index = -3;
-            //       today = DateTime.now();
-            //     });
-            //   },
-            //   child: Container(
-            //     height: 40.0,
-            //     width: MediaQuery.of(context).size.width * 0.2,
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(
-            //         8.0,
-            //       ),
-            //       color: index == -3 ?  Constants().deepTealColor :  Colors.white,
-            //     ),
-            //     alignment: Alignment.center,
-            //     child: Text(
-            //       months[now.month],
-            //       style: TextStyle(
-            //         fontSize: 20.0,
-            //         fontWeight: FontWeight.w600,
-            //         color: index == -3 ?  Constants().backgroundColor:  Constants().deepTealColor,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // const SizedBox(width: 6.0,),
-            // InkWell(
-            //   onTap: () {
-            //     setState(() {
-            //       index = -2;
-            //       today = DateTime.now();
-            //     });
-            //   },
-            //   child: Container(
-            //     height: 40.0,
-            //     width: MediaQuery.of(context).size.width * 0.2,
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(
-            //         8.0,
-            //       ),
-            //       color: index == -2 ?  Constants().deepTealColor :  Colors.white,
-            //     ),
-            //     alignment: Alignment.center,
-            //     child: Text(
-            //       months[now.month + 1],
-            //       style: TextStyle(
-            //         fontSize: 20.0,
-            //         fontWeight: FontWeight.w600,
-            //         color: index == -2 ?  Constants().backgroundColor:  Constants().deepTealColor,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // const SizedBox(width: 6.0,),
-            // InkWell(
-            //   onTap: () {
-            //     setState(() {
-            //       index = -1;
-            //       today = DateTime.now();
-            //     });
-            //   },
-            //   child: Container(
-            //     height: 40.0,
-            //     width: MediaQuery.of(context).size.width * 0.2,
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(
-            //         8.0,
-            //       ),
-            //       color: index == -1 ?  Constants().deepTealColor :  Colors.white,
-            //     ),
-            //     alignment: Alignment.center,
-            //     child: Text(
-            //       months[now.month + 2],
-            //       style: TextStyle(
-            //         fontSize: 20.0,
-            //         fontWeight: FontWeight.w600,
-            //         color: index == -1 ?  Constants().backgroundColor:  Constants().deepTealColor,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  index = 10;
+                  today = DateTime(now.year, now.month + 1, today.day);
+                });
+              },
+              child: Container(
+                height: 40.0,
+                width: MediaQuery.of(context).size.width * 0.2,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    13.0,
+                  ),
+                  color: index == 10 ?  Constants().deepTealColor :  Colors.white,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  months[now.month],
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: index == 10 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 6.0,),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  index = 11;
+                  today = DateTime(now.year, now.month + 2, today.day);
+                });
+              },
+              child: Container(
+                height: 40.0,
+                width: MediaQuery.of(context).size.width * 0.2,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    13.0,
+                  ),
+                  color: index == 11 ?  Constants().deepTealColor :  Colors.white,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  months[now.month + 1],
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: index == 11 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 6.0,),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  index = 12;
+                  today = DateTime(now.year, now.month + 3, today.day);
+                });
+              },
+              child: Container(
+                height: 40.0,
+                width: MediaQuery.of(context).size.width * 0.2,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    13.0,
+                  ),
+                  color: index == 12 ?  Constants().deepTealColor :  Colors.white,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  months[now.month + 2],
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: index == 12 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -173,7 +173,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             subtitle: Text(
-              "Welcome {newname}",
+              "Welcome ${myName}",
               style: TextStyle(
                 color: Constants().deepTealColor,
               ),
