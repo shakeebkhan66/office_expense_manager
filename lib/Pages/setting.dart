@@ -14,15 +14,13 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-
   // TODO Instance of DBHelper
   DbHelper dbHelper = DbHelper();
 
   TextEditingController nameController = TextEditingController();
 
   // TODO Getting value from SharedPreference Class
-  var myName =  SharedPreferenceClass.preferences?.getString('name');
-
+  var myName = SharedPreferenceClass.preferences?.getString('name');
 
   @override
   void initState() {
@@ -37,10 +35,14 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (ctx) => const HomePage()));
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => const HomePage()));
           },
-          icon: Icon(CupertinoIcons.back, color: Constants().backgroundColor,),
+          icon: Icon(
+            CupertinoIcons.back,
+            color: Constants().backgroundColor,
+          ),
         ),
         title: Text(
           "Settings",
@@ -77,8 +79,7 @@ class _SettingsState extends State<Settings> {
               style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w800,
-                  color: Constants().deepTealColor
-              ),
+                  color: Constants().deepTealColor),
             ),
             subtitle: Text(
               "This is irreversible",
@@ -119,7 +120,9 @@ class _SettingsState extends State<Settings> {
                       decoration: InputDecoration(
                         hintText: "enter your name",
                         labelText: "Your Name",
-                        labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Constants().deepTealColor),
+                        labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Constants().deepTealColor),
                         hintStyle: TextStyle(color: Constants().deepTealColor),
                         border: InputBorder.none,
                       ),

@@ -29,14 +29,27 @@ class _SplashScreenState extends State<SplashScreen> {
     if (name != null) {
       bool? auth = await dbHelper.getLocalAuth();
       if (auth != null && auth) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx) => FingerPrintAuth()));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => FingerPrintAuth(),
+          ),
+        );
       } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx) => HomePage()));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
       }
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx) => AddName()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => AddName(),
+        ),
+      );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

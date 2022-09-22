@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:office_expense_manager/Pages/setting.dart';
 import 'package:office_expense_manager/Widgets/confirm_dialog.dart';
@@ -20,7 +19,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-
   late Box box;
   late SharedPreferences preferences;
   DbHelper dbHelper = DbHelper();
@@ -28,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   int totalBalance = 0;
   int totalIncome = 0;
   int totalExpense = 0;
-  // List<FlSpot> dataSet = [];
   DateTime today = DateTime.now();
   DateTime now = DateTime.now();
   int index = 1;
@@ -81,33 +78,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
-  // TODO Graph
-  // List<FlSpot> getPlotPoints(List<TransactionModel> entireData) {
-  //   dataSet = [];
-  //   List tempdataSet = [];
-  //
-  //   for (TransactionModel item in entireData) {
-  //     if (item.date.month == today.month && item.type == "Expense") {
-  //       tempdataSet.add(item);
-  //     }
-  //   }
-  //   //
-  //   // Sorting the list as per the date
-  //   tempdataSet.sort((a, b) => a.date.day.compareTo(b.date.day));
-  //   //
-  //   for (var i = 0; i < tempdataSet.length; i++) {
-  //     dataSet.add(
-  //       FlSpot(
-  //         tempdataSet[i].date.day.toDouble(),
-  //         tempdataSet[i].amount.toDouble(),
-  //       ),
-  //     );
-  //   }
-  //   return dataSet;
-  // }
-
-
   // TODO Get Total Balance Function
   getTotalBalance(List<TransactionModel> entireData) {
     totalBalance = 0;
@@ -126,376 +96,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0.0,
-        backgroundColor: Constants().deepTealColor,
-      ),
-      backgroundColor: Constants().backgroundColor,
-      //
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(
-            CupertinoPageRoute(
-              builder: (context) => const AddExpenseNoGradient(),
-            ),
-          )
-              .then((value) {
-            setState(() {});
-          });
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            30.0,
-          ),
-        ),
-        backgroundColor: Constants().deepTealColor,
-        child: const Icon(
-          CupertinoIcons.add,
-          size: 32.0,
-        ),
-      ),
-      //
-      body: FutureBuilder<List<TransactionModel>>(
-        future: fetch(),
-        builder: (context, snapshot) {
-          // print(snapshot.data);
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text(
-                "Oopssss !!! There is some error !",
-                style: TextStyle(
-                  fontSize: 24.0,
-                ),
-              ),
-            );
-          }
-          if (snapshot.hasData) {
-            if (snapshot.data!.isEmpty) {
-              return Center(
-                child: Text(
-                  "You haven't added Any Data !",
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    color: Constants().deepTealColor,
-                  ),
-                ),
-              );
-            }
-            //
-            getTotalBalance(snapshot.data!);
-            // getPlotPoints(snapshot.data!);
-            return ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(
-                    12.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          SizedBox(
-                            width: 200.0,
-                            child: Text(
-                              "Welcome ${preferences.getString('name')}",
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.w900,
-                                color: Constants().deepTealColor,
-                              ),
-                              maxLines: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            40.0,
-                          ),
-                          color: Constants().deepTealColor,
-                        ),
-                        padding: const EdgeInsets.all(
-                          12.0,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(
-                              MaterialPageRoute(
-                                builder: (context) => const Settings(),
-                              ),
-                            )
-                                .then((value) {
-                              setState(() {});
-                            });
-                          },
-                          child: Icon(
-                            CupertinoIcons.settings,
-                            size: 20.0,
-                            color: Constants().backgroundColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // TODO Select Month
-                selectMonth(),
-
-
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  margin: const EdgeInsets.all(
-                    12.0,
-                  ),
-                  child: Ink(
-                    decoration:  BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[
-                          Constants().deepTealColor,
-                          Constants().deepTealColor.withOpacity(0.7),
-                        ],
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(
-                          24.0,
-                        ),
-                      ),
-                    ),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            24.0,
-                          ),
-                        ),
-                        // color: Static.PrimaryColor,
-                      ),
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 18.0,
-                        horizontal: 8.0,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Total Balance',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              // fontWeight: FontWeight.w700,
-                              color: Constants().backgroundColor,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 12.0,
-                          ),
-                          Text(
-                            'Rs $totalBalance',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 36.0,
-                              letterSpacing: 1.0,
-                              fontWeight: FontWeight.w700,
-                              color: Constants().backgroundColor,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 12.0,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                cardIncome(
-                                  totalIncome.toString(),
-                                ),
-                                cardExpense(
-                                  totalExpense.toString(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                // TODO Line Chart To Show Data
-                // Padding(
-                //   padding: const EdgeInsets.all(
-                //     12.0,
-                //   ),
-                //   child: Text(
-                //     "${months[today.month - 1]} ${today.year}",
-                //     style: TextStyle(
-                //       fontSize: 32.0,
-                //       color: Constants().deepTealColor,
-                //       fontWeight: FontWeight.w900,
-                //     ),
-                //   ),
-                // ),
-                // //
-                // dataSet.isEmpty || dataSet.length < 2
-                //     ? Container(
-                //         padding: EdgeInsets.symmetric(
-                //           vertical: 40.0,
-                //           horizontal: 20.0,
-                //         ),
-                //         margin: EdgeInsets.all(
-                //           12.0,
-                //         ),
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(
-                //             8.0,
-                //           ),
-                //           color: Colors.white,
-                //           boxShadow: [
-                //             BoxShadow(
-                //               color: Colors.grey.withOpacity(0.5),
-                //               spreadRadius: 5,
-                //               blurRadius: 7,
-                //               offset:
-                //                   Offset(0, 3), // changes position of shadow
-                //             ),
-                //           ],
-                //         ),
-                //         child: Text(
-                //           "Not Enough Data to render Chart",
-                //           style: TextStyle(
-                //             fontSize: 20.0,
-                //           ),
-                //         ),
-                //       )
-                //     : Container(
-                //         height: 400.0,
-                //         padding: EdgeInsets.symmetric(
-                //           vertical: 40.0,
-                //           horizontal: 12.0,
-                //         ),
-                //         margin: EdgeInsets.all(
-                //           12.0,
-                //         ),
-                //         decoration: BoxDecoration(
-                //           color: Colors.white,
-                //           borderRadius: BorderRadius.only(
-                //             topLeft: Radius.circular(8),
-                //             topRight: Radius.circular(8),
-                //             bottomLeft: Radius.circular(8),
-                //             bottomRight: Radius.circular(8),
-                //           ),
-                //           boxShadow: [
-                //             BoxShadow(
-                //               color: Colors.grey.withOpacity(0.5),
-                //               spreadRadius: 5,
-                //               blurRadius: 7,
-                //               offset:
-                //                   Offset(0, 3), // changes position of shadow
-                //             ),
-                //           ],
-                //         ),
-                //         child: LineChart(
-                //           LineChartData(
-                //             borderData: FlBorderData(
-                //               show: false,
-                //             ),
-                //             lineBarsData: [
-                //               LineChartBarData(
-                //                 // spots: getPlotPoints(snapshot.data!),
-                //                 spots: getPlotPoints(snapshot.data!),
-                //                 isCurved: false,
-                //                 barWidth: 2.5,
-                //                 colors: [
-                //                   Constants().deepTealColor,
-                //                 ],
-                //                 showingIndicators: [200, 200, 90, 10],
-                //                 dotData: FlDotData(
-                //                   show: true,
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       ),
-
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    "Recent Transactions",
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      color: Constants().deepTealColor,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ),
-                //
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: snapshot.data!.length + 1,
-                  itemBuilder: (context, index) {
-                    TransactionModel dataAtIndex;
-                    try {
-                      dataAtIndex = snapshot.data![index];
-                    } catch (e) {
-                      // Delete that key and value,
-                      // hence making it null here., as we still build on the length.
-                      return Container();
-                    }
-
-                    if (dataAtIndex.date.month == today.month) {
-                      if (dataAtIndex.type == "Income") {
-                        return incomeTile(
-                          dataAtIndex.amount,
-                          dataAtIndex.note,
-                          dataAtIndex.date,
-                          index,
-                        );
-                      } else {
-                        return expenseTile(
-                          dataAtIndex.amount,
-                          dataAtIndex.note,
-                          dataAtIndex.date,
-                          index,
-                        );
-                      }
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-                //
-                const SizedBox(
-                  height: 60.0,
-                ),
-              ],
-            );
-          } else {
-            return const Text(
-              "Loading...",
-            );
-          }
-        },
-      ),
-    );
-  }
-
   // TODO Card Income Widget
-  Widget cardIncome(String value) {
+  cardIncome(String value) {
     return Row(
       children: [
         Container(
@@ -542,7 +144,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // TODO Card Expense Widget
-  Widget cardExpense(String value) {
+  cardExpense(String value) {
     return Row(
       children: [
         Container(
@@ -589,7 +191,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // TODO Expansion Tile Widget
-  Widget expenseTile(int value, String note, DateTime date, int index) {
+  expenseTile(int value, String note, DateTime date, int index) {
     return InkWell(
       splashColor: Constants().deepTealColor,
       onTap: () {
@@ -635,9 +237,9 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       children: [
                         Icon(
-                          CupertinoIcons.arrow_down_circle_fill,
+                          CupertinoIcons.arrow_up_circle_fill,
                           size: 28.0,
-                          color: Constants().backgroundColor,
+                          color: Colors.red,
                         ),
                         const SizedBox(
                           width: 4.0,
@@ -651,8 +253,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-
-                    //
                     Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
@@ -675,7 +275,6 @@ class _HomePageState extends State<HomePage> {
                         color:  Constants().backgroundColor,
                       ),
                     ),
-                    //
                     Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
@@ -696,7 +295,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // TODO Income Tile Widget
-  Widget incomeTile(int value, String note, DateTime date, int index) {
+  incomeTile(int value, String note, DateTime date, int index) {
     return InkWell(
       splashColor: Constants().deepTealColor,
       onTap: () {
@@ -739,9 +338,9 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Icon(
-                      CupertinoIcons.arrow_up_circle_fill,
+                      CupertinoIcons.arrow_down_circle_fill,
                       size: 28.0,
-                      color: Constants().backgroundColor,
+                      color: Colors.green,
                     ),
                     const SizedBox(
                       width: 4.0,
@@ -797,9 +396,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
   // TODO Select Month Widget
-  Widget selectMonth() {
+  selectMonth() {
     return Padding(
       padding: const EdgeInsets.all(
         8.0,
@@ -1146,6 +744,271 @@ class _HomePageState extends State<HomePage> {
             //   ),
             // ),
           ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0.0,
+        backgroundColor: Constants().deepTealColor,
+      ),
+      backgroundColor: Constants().backgroundColor,
+      body: FutureBuilder<List<TransactionModel>>(
+        future: fetch(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                "Opss !!! There is some error !",
+                style: TextStyle(
+                  fontSize: 24.0,
+                ),
+              ),
+            );
+          }
+          if (snapshot.hasData) {
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                child: Text(
+                  "You haven't added Any Data !",
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: Constants().deepTealColor,
+                  ),
+                ),
+              );
+            }
+
+            // TODO Get Total Balance
+            getTotalBalance(snapshot.data!);
+
+            return ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(
+                    12.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          SizedBox(
+                            width: 200.0,
+                            child: Text(
+                              "Welcome ${preferences.getString('name')}",
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.w900,
+                                color: Constants().deepTealColor,
+                              ),
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            40.0,
+                          ),
+                          color: Constants().deepTealColor,
+                        ),
+                        padding: const EdgeInsets.all(
+                          12.0,
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(
+                              MaterialPageRoute(
+                                builder: (context) => const Settings(),
+                              ),
+                            )
+                                .then((value) {
+                              setState(() {});
+                            });
+                          },
+                          child: Icon(
+                            CupertinoIcons.settings,
+                            size: 20.0,
+                            color: Constants().backgroundColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // TODO Select Month
+                selectMonth(),
+
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  margin: const EdgeInsets.all(
+                    12.0,
+                  ),
+                  child: Ink(
+                    decoration:  BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          Constants().deepTealColor,
+                          Constants().deepTealColor.withOpacity(0.7),
+                        ],
+                      ),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(
+                          24.0,
+                        ),
+                      ),
+                    ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            24.0,
+                          ),
+                        ),
+                        // color: Static.PrimaryColor,
+                      ),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 18.0,
+                        horizontal: 8.0,
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Total Balance',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              // fontWeight: FontWeight.w700,
+                              color: Constants().backgroundColor,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12.0,
+                          ),
+                          Text(
+                            'Rs $totalBalance',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 36.0,
+                              letterSpacing: 1.0,
+                              fontWeight: FontWeight.w700,
+                              color: Constants().backgroundColor,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                cardIncome(
+                                  totalIncome.toString(),
+                                ),
+                                cardExpense(
+                                  totalExpense.toString(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    "Recent Transactions",
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: Constants().deepTealColor,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data!.length + 1,
+                  itemBuilder: (context, index) {
+                    TransactionModel dataAtIndex;
+                    try {
+                      dataAtIndex = snapshot.data![index];
+                    } catch (e) {
+                      return Container();
+                    }
+
+                    if (dataAtIndex.date.month == today.month) {
+                      if (dataAtIndex.type == "Income") {
+                        return incomeTile(
+                          dataAtIndex.amount,
+                          dataAtIndex.note,
+                          dataAtIndex.date,
+                          index,
+                        );
+                      } else {
+                        return expenseTile(
+                          dataAtIndex.amount,
+                          dataAtIndex.note,
+                          dataAtIndex.date,
+                          index,
+                        );
+                      }
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+                //
+                const SizedBox(
+                  height: 60.0,
+                ),
+              ],
+            );
+          } else {
+            return const Text(
+              "Loading...",
+            );
+          }
+        },
+      ),
+
+      // TODO FLOATING ACTION BUTTON
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .push(
+            CupertinoPageRoute(
+              builder: (context) => const AddExpenseNoGradient(),
+            ),
+          )
+              .then((value) {
+            setState(() {});
+          });
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            30.0,
+          ),
+        ),
+        backgroundColor: Constants().deepTealColor,
+        child: const Icon(
+          CupertinoIcons.add,
+          size: 32.0,
         ),
       ),
     );

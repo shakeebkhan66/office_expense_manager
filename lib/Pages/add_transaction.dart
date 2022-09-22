@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../Constants/colors.dart';
 import '../Controllers/db_helper.dart';
-
 
 class AddExpenseNoGradient extends StatefulWidget {
   const AddExpenseNoGradient({Key? key}) : super(key: key);
@@ -35,6 +31,7 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
     "Dec"
   ];
 
+  // TODO Select Date From Calender Function With the Desired Color Too
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -52,8 +49,7 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
             ),
             child: child!,
           );
-        }
-    );
+        });
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -87,11 +83,9 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
               ),
             ),
           ),
-          //
           const SizedBox(
             height: 40.0,
           ),
-          //
           Row(
             children: [
               const SizedBox(
@@ -101,24 +95,30 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                 child: TextField(
                   cursorColor: Constants().deepTealColor,
                   decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.attach_money_rounded, color: Constants().deepTealColor,),
+                      suffixIcon: Icon(
+                        Icons.attach_money_rounded,
+                        color: Constants().deepTealColor,
+                      ),
                       hintText: "0",
                       labelText: "Enter your amount",
-                      labelStyle: TextStyle(color: Constants().deepTealColor, fontWeight: FontWeight.bold),
-                      hintStyle: TextStyle(color: Constants().deepTealColor,),
+                      labelStyle: TextStyle(
+                          color: Constants().deepTealColor,
+                          fontWeight: FontWeight.bold),
+                      hintStyle: TextStyle(
+                        color: Constants().deepTealColor,
+                      ),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
-                          borderSide: BorderSide(color: Constants().deepTealColor)
-                      ),
+                          borderSide:
+                              BorderSide(color: Constants().deepTealColor)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
-                          borderSide: BorderSide(color: Constants().deepTealColor)
-                      ),
+                          borderSide:
+                              BorderSide(color: Constants().deepTealColor)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
-                          borderSide: BorderSide(color: Constants().deepTealColor)
-                      )
-                  ),
+                          borderSide:
+                              BorderSide(color: Constants().deepTealColor))),
                   style: TextStyle(
                     fontSize: 17.0,
                     color: Constants().deepTealColor,
@@ -144,7 +144,7 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                                 width: 6.0,
                               ),
                               Text(
-                                "Enter only Numbers as Amount",
+                                "Enter only Numbers",
                                 style: TextStyle(
                                   fontSize: 16.0,
                                 ),
@@ -164,11 +164,9 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
               ),
             ],
           ),
-          //
           const SizedBox(
             height: 20.0,
           ),
-          //
           Row(
             children: [
               const SizedBox(
@@ -176,26 +174,6 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
               ),
               Expanded(
                 child: TextField(
-                  decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.description_outlined, color: Constants().deepTealColor,),
-                      hintText: "Enter your transaction statement",
-                      labelText: "Transaction Note",
-                      labelStyle: TextStyle(color: Constants().deepTealColor, fontWeight: FontWeight.bold),
-                      hintStyle: TextStyle(color: Constants().deepTealColor,),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: BorderSide(color: Constants().deepTealColor)
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: BorderSide(color: Constants().deepTealColor)
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: BorderSide(color: Constants().deepTealColor)
-                      )
-                  ),
-
                   style: TextStyle(
                     fontSize: 17.0,
                     color: Constants().deepTealColor,
@@ -203,6 +181,31 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                   onChanged: (val) {
                     note = val;
                   },
+                  decoration: InputDecoration(
+                      suffixIcon: Icon(
+                        Icons.description_outlined,
+                        color: Constants().deepTealColor,
+                      ),
+                      hintText: "Enter transaction note",
+                      labelText: "Transaction Note",
+                      labelStyle: TextStyle(
+                          color: Constants().deepTealColor,
+                          fontWeight: FontWeight.bold),
+                      hintStyle: TextStyle(
+                        color: Constants().deepTealColor,
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide:
+                              BorderSide(color: Constants().deepTealColor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide:
+                              BorderSide(color: Constants().deepTealColor)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide:
+                              BorderSide(color: Constants().deepTealColor))),
                 ),
               ),
             ],
@@ -212,7 +215,13 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
           ),
           Container(
             padding: const EdgeInsets.only(left: 10),
-            child: Text("C H O O S E  O N E", style: TextStyle(color: Constants().deepTealColor, fontSize: 21, fontWeight: FontWeight.w600),),
+            child: Text(
+              "C H O O S E  O N E",
+              style: TextStyle(
+                  color: Constants().deepTealColor,
+                  fontSize: 21,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           const SizedBox(height: 29),
           Row(
@@ -223,7 +232,9 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                   "Income",
                   style: TextStyle(
                     fontSize: 18.0,
-                    color: type == "Income" ? Constants().backgroundColor : Constants().deepTealColor,
+                    color: type == "Income"
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
                 selectedColor: Constants().deepTealColor,
@@ -247,8 +258,9 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                   "Expense",
                   style: TextStyle(
                       fontSize: 18.0,
-                      color: type == "Expense" ? Constants().backgroundColor : Constants().deepTealColor
-                  ),
+                      color: type == "Expense"
+                          ? Constants().backgroundColor
+                          : Constants().deepTealColor),
                 ),
                 selectedColor: Constants().deepTealColor,
                 onSelected: (val) {
@@ -288,15 +300,19 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                   child: Row(
                     children: [
                       Container(
-                        child: Text("Select Date", style: TextStyle(color: Constants().deepTealColor, fontSize: 19, fontWeight: FontWeight.w600),),
+                        child: Text(
+                          "Select Date",
+                          style: TextStyle(
+                              color: Constants().deepTealColor,
+                              fontSize: 19,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
                       const SizedBox(width: 100),
                       Text(
                         "${selectedDate.day} ${months[selectedDate.month - 1]}",
                         style: TextStyle(
-                            fontSize: 20.0,
-                            color: Constants().deepTealColor
-                        ),
+                            fontSize: 20.0, color: Constants().deepTealColor),
                       ),
                     ],
                   ),
@@ -307,7 +323,6 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
           const SizedBox(
             height: 40.0,
           ),
-          //
           SizedBox(
             height: 40.0,
             child: Padding(
@@ -342,8 +357,7 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w900,
-                      color: Constants().backgroundColor
-                  ),
+                      color: Constants().backgroundColor),
                 ),
               ),
             ),

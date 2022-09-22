@@ -20,11 +20,11 @@ class _AddNameState extends State<AddName> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Constants().backgroundColor,
       appBar: AppBar(
         toolbarHeight: 0.0,
         backgroundColor: Constants().backgroundColor,
       ),
-      backgroundColor: Constants().backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(
           12.0,
@@ -53,7 +53,7 @@ class _AddNameState extends State<AddName> {
               height: 20.0,
             ),
             Text(
-              "Please Enter Your Name ?",
+              "Please enter your name ?",
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: 22.0,
@@ -78,13 +78,6 @@ class _AddNameState extends State<AddName> {
                 horizontal: 16.0,
               ),
               child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Your Name",
-                  hintStyle: TextStyle(
-                    color: Constants().backgroundColor,
-                  ),
-                  border: InputBorder.none,
-                ),
                 style: TextStyle(
                   fontSize: 20.0,
                   color: Constants().backgroundColor,
@@ -93,13 +86,17 @@ class _AddNameState extends State<AddName> {
                 onChanged: (val) {
                   name = val;
                 },
+                decoration: InputDecoration(
+                  hintText: "Your Name",
+                  hintStyle: TextStyle(
+                    color: Constants().backgroundColor,
+                  ),
+                  border: InputBorder.none,
+                ),
               ),
             ),
             const SizedBox(
-              height: 20.0,
-            ),
-            const SizedBox(
-              height: 40,
+              height: 60.0,
             ),
             SizedBox(
               height: 40.0,
