@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:office_expense_manager/Pages/widgets/confirm_dialog.dart';
+import 'package:office_expense_manager/Widgets/confirm_dialog.dart';
 import '../Constants/colors.dart';
 import '../Controllers/db_helper.dart';
 import '../Controllers/shared_preference_class.dart';

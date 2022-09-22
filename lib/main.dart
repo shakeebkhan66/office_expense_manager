@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Expenses',
-      home: Splash(),
+      home: SplashScreen(),
     );
   }
 }

@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 
-import '../../Constants/colors.dart';
+import '../Constants/colors.dart';
 
 SnackBar deleteInfoSnackBar = SnackBar(
   backgroundColor: Constants().deepTealColor,

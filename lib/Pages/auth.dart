@@ -13,6 +13,7 @@ class FingerPrintAuth extends StatefulWidget {
 
 class _FingerPrintAuthState extends State<FingerPrintAuth> {
   bool authenticated = false;
+
   void authenticate() async {
     try {
       var localAuth = LocalAuthentication();
@@ -22,11 +23,8 @@ class _FingerPrintAuthState extends State<FingerPrintAuth> {
         useErrorDialogs: true,
       );
       if (authenticated) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (ctx) => new HomePage()));
       } else {
         setState(() {});
       }
@@ -38,7 +36,8 @@ class _FingerPrintAuthState extends State<FingerPrintAuth> {
             "ERROR",
           ),
           content: const Text(
-            "You need to setup either PIN or Fingerprint Authentication to be able to use this App !\nI am doing this for your safety 🙂",
+            "You need to setup either PIN or Fingerprint Authentication to "
+                "be able to use this App !\nI am doing this for your safety 🙂",
           ),
           actions: [
             TextButton(
@@ -66,7 +65,10 @@ class _FingerPrintAuthState extends State<FingerPrintAuth> {
     return Scaffold(
       backgroundColor: Constants().backgroundColor,
       appBar: AppBar(
-        title: Text("Local Auth", style: TextStyle(color: Constants().backgroundColor),),
+        title: Text(
+          "Local Auth",
+          style: TextStyle(color: Constants().backgroundColor),
+        ),
         backgroundColor: Constants().deepTealColor,
       ),
       body: Center(
@@ -98,8 +100,7 @@ class _FingerPrintAuthState extends State<FingerPrintAuth> {
                     style: TextStyle(
                         fontSize: 28.0,
                         fontWeight: FontWeight.w800,
-                        color: Constants().deepTealColor
-                    ),
+                        color: Constants().deepTealColor),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(

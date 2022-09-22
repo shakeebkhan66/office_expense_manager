@@ -5,14 +5,14 @@ import '../Controllers/db_helper.dart';
 import 'auth.dart';
 import 'home_page.dart';
 
-class Splash extends StatefulWidget {
-  const Splash({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _SplashState createState() => _SplashState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashScreenState extends State<SplashScreen> {
 
   // TODO Instance of DB Helper
   DbHelper dbHelper = DbHelper();

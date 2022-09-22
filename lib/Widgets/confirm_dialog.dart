@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../Constants/colors.dart';
+import '../Constants/colors.dart';
 
 showConfirmDialog(BuildContext context, String title, String content) async {
   return await showDialog(

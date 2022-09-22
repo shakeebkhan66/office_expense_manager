@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:office_expense_manager/Pages/setting.dart';
-import 'package:office_expense_manager/Pages/widgets/confirm_dialog.dart';
-import 'package:office_expense_manager/Pages/widgets/info_snackbar.dart';
+import 'package:office_expense_manager/Widgets/confirm_dialog.dart';
+import 'package:office_expense_manager/Widgets/info_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Constants/colors.dart';
 import '../Controllers/db_helper.dart';
-import 'transaction.dart';
+import '../Models/transaction.dart';
 import 'add_transaction.dart';
 
 class HomePage extends StatefulWidget {

@@ -12,7 +12,6 @@ class AddName extends StatefulWidget {
 }
 
 class _AddNameState extends State<AddName> {
-
   // TODO Instance of DBHelper
   DbHelper dbHelper = DbHelper();
 
@@ -70,13 +69,10 @@ class _AddNameState extends State<AddName> {
                   borderRadius: BorderRadius.circular(
                     12.0,
                   ),
-                  gradient: LinearGradient(
-                      colors: [
-                        Constants().deepTealColor,
-                        Constants().deepTealColor.withOpacity(0.6),
-                      ]
-                  )
-              ),
+                  gradient: LinearGradient(colors: [
+                    Constants().deepTealColor,
+                    Constants().deepTealColor.withOpacity(0.6),
+                  ])),
               padding: const EdgeInsets.symmetric(
                 vertical: 8.0,
                 horizontal: 16.0,
@@ -84,7 +80,9 @@ class _AddNameState extends State<AddName> {
               child: TextFormField(
                 decoration: InputDecoration(
                   hintText: "Your Name",
-                  hintStyle: TextStyle(color: Constants().backgroundColor,),
+                  hintStyle: TextStyle(
+                    color: Constants().backgroundColor,
+                  ),
                   border: InputBorder.none,
                 ),
                 style: TextStyle(
@@ -100,7 +98,9 @@ class _AddNameState extends State<AddName> {
             const SizedBox(
               height: 20.0,
             ),
-            const SizedBox(height: 40,),
+            const SizedBox(
+              height: 40,
+            ),
             SizedBox(
               height: 40.0,
               child: Padding(
@@ -119,7 +119,8 @@ class _AddNameState extends State<AddName> {
                             label: "OK",
                             textColor: Colors.red,
                             onPressed: () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             },
                           ),
                           backgroundColor: Colors.white,
@@ -135,11 +136,8 @@ class _AddNameState extends State<AddName> {
                     } else {
                       DbHelper dbHelper = DbHelper();
                       await dbHelper.addName(name);
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (ctx) => new HomePage()));
                     }
                   },
                   child: Row(
