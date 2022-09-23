@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   int totalBalance = 0;
   int totalIncome = 0;
   int totalExpense = 0;
+  int newTotalBalance = 0;
   DateTime today = DateTime.now();
   DateTime now = DateTime.now();
   int index = 1;
@@ -74,6 +75,7 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       });
+      print("Hello" +items.toString());
       return items;
     }
   }
@@ -83,11 +85,15 @@ class _HomePageState extends State<HomePage> {
     totalBalance = 0;
     totalIncome = 0;
     totalExpense = 0;
+    newTotalBalance = 0;
     for (TransactionModel data in entireData) {
-        if (data.date.month == today.month) {
+        if (data.date.month == today.month || data.date.month == today.month + 1) {
           if (data.type == "Income") {
-            totalBalance += data.amount;
-            totalIncome += data.amount;
+              totalBalance += data.amount;
+              totalIncome += data.amount;
+          }else if(totalBalance > totalIncome){
+            newTotalBalance = totalBalance;
+            totalBalance += data.amount - newTotalBalance;
           }
           else {
             totalBalance -= data.amount;
@@ -96,6 +102,8 @@ class _HomePageState extends State<HomePage> {
         }
     }
   }
+
+
 
 
   // TODO Card Income Widget
@@ -758,6 +766,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
