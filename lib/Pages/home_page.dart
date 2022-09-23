@@ -81,21 +81,44 @@ class _HomePageState extends State<HomePage> {
   }
 
   // TODO Get Total Balance Function
+  // getTotalBalance(List<TransactionModel> entireData) {
+  //   totalBalance = 0;
+  //   totalIncome = 0;
+  //   totalExpense = 0;
+  //   newTotalBalance = 0;
+  //   for (TransactionModel data in entireData) {
+  //       if (data.date.month == today.month || data.date.month == today.month - 1) {
+  //         if (data.type == "Income") {
+  //             totalBalance += data.amount;
+  //             totalIncome += data.amount;
+  //         }else if(totalBalance > totalIncome){
+  //           newTotalBalance = totalBalance;
+  //           totalBalance += data.amount - newTotalBalance;
+  //         }
+  //         else {
+  //           totalBalance -= data.amount;
+  //           totalExpense += data.amount;
+  //         }
+  //       }
+  //   }
+  // }
+
+
+  // TODO Get Total Balance
   getTotalBalance(List<TransactionModel> entireData) {
     totalBalance = 0;
     totalIncome = 0;
     totalExpense = 0;
     newTotalBalance = 0;
     for (TransactionModel data in entireData) {
-        if (data.date.month == today.month || data.date.month == today.month + 1) {
-          if (data.type == "Income") {
-              totalBalance += data.amount;
-              totalIncome += data.amount;
-          }else if(totalBalance > totalIncome){
-            newTotalBalance = totalBalance;
-            totalBalance += data.amount - newTotalBalance;
+      print(data.amount);
+        if (data.date.month == today.month) {
+          if(totalExpense > totalIncome){
           }
-          else {
+          if (data.type == "Income") {
+            totalBalance += data.amount;
+            totalIncome += data.amount;
+          }else {
             totalBalance -= data.amount;
             totalExpense += data.amount;
           }
@@ -104,10 +127,8 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-
-
   // TODO Card Income Widget
-  cardIncome(String value) {
+  Widget cardIncome(String value) {
     return Row(
       children: [
         Container(
@@ -154,7 +175,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // TODO Card Expense Widget
-  cardExpense(String value) {
+  Widget cardExpense(String value) {
     return Row(
       children: [
         Container(
@@ -201,7 +222,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // TODO Expansion Tile Widget
-  expenseTile(int value, String note, DateTime date, int index) {
+  Widget expenseTile(int value, String note, DateTime date, int index) {
     return InkWell(
       splashColor: Constants().deepTealColor,
       onTap: () {
@@ -309,7 +330,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // TODO Income Tile Widget
-  incomeTile(int value, String note, DateTime date, int index) {
+  Widget incomeTile(int value, String note, DateTime date, int index) {
     return InkWell(
       splashColor: Constants().deepTealColor,
       onTap: () {
@@ -318,7 +339,7 @@ class _HomePageState extends State<HomePage> {
         );
       },
       onLongPress: () async {
-        bool? answer = showConfirmDialog(
+        bool? answer = await showConfirmDialog(
           context,
           "WARNING",
           "This will delete this record. This action is irreversible. Do you want to continue ?",
@@ -761,11 +782,13 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            const SizedBox(width: 6.0,),
           ],
         ),
       ),
     );
   }
+
 
 
   @override
