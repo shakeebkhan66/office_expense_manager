@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:office_expense_manager/Pages/setting.dart';
 import 'package:office_expense_manager/Widgets/confirm_dialog.dart';
@@ -18,12 +21,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   late Box box;
   late SharedPreferences preferences;
   DbHelper dbHelper = DbHelper();
   Map? data;
   int totalBalance = 0;
+  int XtotalBalance = 0;
   int totalIncome = 0;
   int totalExpense = 0;
   int newTotalBalance = 0;
@@ -75,7 +78,6 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       });
-      print("Hello" +items.toString());
       return items;
     }
   }
@@ -103,27 +105,62 @@ class _HomePageState extends State<HomePage> {
   //   }
   // }
 
-
   // TODO Get Total Balance
+  // getTotalBalance(List<TransactionModel> entireData) {
+  //   totalBalance = 0;
+  //   totalIncome = 0;
+  //   totalExpense = 0;
+  //   for (TransactionModel data in entireData) {
+  //     print(data.amount);
+  //       if (data.date.month == today.month) {
+  //         print("Selected Month ${data.date.month}");
+  //         print("Wse Month ${today.month}");
+  //         if (data.type == "Income") {
+  //           totalBalance += data.amount;
+  //           totalIncome += data.amount;
+  //         }else {
+  //           totalBalance -= data.amount;
+  //           totalExpense += data.amount;
+  //         }
+  //         if(totalBalance < 0){
+  //           Fluttertoast.showToast(msg: "Expenses are increasing now");
+  //         }
+  //       }
+  //   }
+  // }
+
+
+  // TODO Correct
+
   getTotalBalance(List<TransactionModel> entireData) {
+    print("New Total Balance $newTotalBalance");
     totalBalance = 0;
     totalIncome = 0;
     totalExpense = 0;
-    newTotalBalance = 0;
     for (TransactionModel data in entireData) {
-      print(data.amount);
-        if (data.date.month == today.month) {
-          if(totalExpense > totalIncome){
-          }
-          if (data.type == "Income") {
-            totalBalance += data.amount;
-            totalIncome += data.amount;
-          }else {
-            totalBalance -= data.amount;
-            totalExpense += data.amount;
-          }
+      if (data.date.month == today.month) {
+        if (data.type == "Income") {
+          // totalBalance += data.amount;
+          totalIncome += data.amount;
+        } else {
+          // totalBalance -= data.amount;
+          totalExpense += data.amount;
+
         }
+      }
     }
+    totalBalance = totalIncome - totalExpense;
+    print("else test  ${totalBalance} totalExp ${totalExpense}");
+
+    print("else >  ${totalBalance} totalExp ${totalBalance > 0}");
+
+    print("else <  ${totalBalance} totalExp ${totalBalance < 0}");
+    newTotalBalance = totalBalance;
+
+    // if(totalBalance < 0){
+    //   newTotalBalance = totalBalance;
+    //   print("NewTotalBalance $newTotalBalance");
+    // }
   }
 
 
@@ -202,17 +239,15 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(
               "Expense",
-              style: TextStyle(
-                  fontSize: 14.0,
-                  color: Constants().backgroundColor
-              ),
+              style:
+                  TextStyle(fontSize: 14.0, color: Constants().backgroundColor),
             ),
             Text(
               value,
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w700,
-                color:  Constants().backgroundColor,
+                color: Constants().backgroundColor,
               ),
             ),
           ],
@@ -245,13 +280,10 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(18.0),
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          gradient: RadialGradient(
-              center: Alignment.centerRight,
-              colors: [
-                Constants().deepTealColor,
-                Constants().deepTealColor.withOpacity(0.65),
-              ]
-          ),
+          gradient: RadialGradient(center: Alignment.centerRight, colors: [
+            Constants().deepTealColor,
+            Constants().deepTealColor.withOpacity(0.65),
+          ]),
           borderRadius: BorderRadius.circular(
             8.0,
           ),
@@ -283,7 +315,7 @@ class _HomePageState extends State<HomePage> {
                           "Expense",
                           style: TextStyle(
                             fontSize: 20.0,
-                            color:  Constants().backgroundColor,
+                            color: Constants().backgroundColor,
                           ),
                         ),
                       ],
@@ -293,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         "${date.day} ${months[date.month - 1]} ",
                         style: TextStyle(
-                          color:  Constants().backgroundColor,
+                          color: Constants().backgroundColor,
                         ),
                       ),
                     ),
@@ -307,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.w700,
-                        color:  Constants().backgroundColor,
+                        color: Constants().backgroundColor,
                       ),
                     ),
                     Padding(
@@ -315,7 +347,7 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         note,
                         style: TextStyle(
-                          color:  Constants().backgroundColor,
+                          color: Constants().backgroundColor,
                         ),
                       ),
                     ),
@@ -354,12 +386,10 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(18.0),
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          gradient: RadialGradient(
-              colors: [
-                Constants().deepTealColor,
-                Constants().deepTealColor.withOpacity(0.65),
-              ]
-          ),
+          gradient: RadialGradient(colors: [
+            Constants().deepTealColor,
+            Constants().deepTealColor.withOpacity(0.65),
+          ]),
           borderRadius: BorderRadius.circular(
             8.0,
           ),
@@ -387,9 +417,7 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       "Credit",
                       style: TextStyle(
-                          fontSize: 20.0,
-                          color:  Constants().backgroundColor
-                      ),
+                          fontSize: 20.0, color: Constants().backgroundColor),
                     ),
                   ],
                 ),
@@ -414,17 +442,14 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.w700,
-                      color:  Constants().backgroundColor
-                  ),
+                      color: Constants().backgroundColor),
                 ),
                 //
                 Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Text(
                     note,
-                    style: TextStyle(
-                        color: Constants().backgroundColor
-                    ),
+                    style: TextStyle(color: Constants().backgroundColor),
                   ),
                 ),
               ],
@@ -461,7 +486,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 9 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 9 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -469,12 +494,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 9 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 9
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -489,7 +518,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 8 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 8 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -497,12 +526,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 8 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 8
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -517,7 +550,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 7 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 7 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -525,12 +558,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 7 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 7
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -545,7 +582,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 6 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 6 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -553,12 +590,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 6 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 6
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -573,7 +614,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 5 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 5 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -581,12 +622,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 5 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 5
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -601,7 +646,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 4 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 4 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -609,12 +654,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 4 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 4
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -629,7 +678,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     8.0,
                   ),
-                  color: index == 3 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 3 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -637,12 +686,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 3 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 3
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -657,7 +710,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     8.0,
                   ),
-                  color: index == 2 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 2 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -665,12 +718,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 2 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 2
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -685,7 +742,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     8.0,
                   ),
-                  color: index == 1 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 1 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -693,12 +750,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 1 ?  Constants().backgroundColor:  Constants().deepTealColor,
+                    color: index == 1
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -713,7 +774,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 10 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 10 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -721,12 +782,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 10 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 10
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -741,7 +806,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 11 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 11 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -749,12 +814,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 11 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 11
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -769,7 +838,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(
                     13.0,
                   ),
-                  color: index == 12 ?  Constants().deepTealColor :  Colors.white,
+                  color: index == 12 ? Constants().deepTealColor : Colors.white,
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -777,12 +846,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
-                    color: index == 12 ?  Constants().backgroundColor :  Constants().deepTealColor,
+                    color: index == 12
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6.0,),
+            const SizedBox(
+              width: 6.0,
+            ),
           ],
         ),
       ),
@@ -790,243 +863,271 @@ class _HomePageState extends State<HomePage> {
   }
 
 
+  // TODO Refresh List
+  // TODO Refresh List Function
+  Future<Null> refreshList() async {
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("New Total Balance $newTotalBalance");
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0.0,
         backgroundColor: Constants().deepTealColor,
       ),
       backgroundColor: Constants().backgroundColor,
-      body: FutureBuilder<List<TransactionModel>>(
-        future: fetch(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text(
-                "Opss !!! There is some error !",
-                style: TextStyle(
-                  fontSize: 24.0,
-                ),
-              ),
-            );
-          }
-          if (snapshot.hasData) {
-            if (snapshot.data!.isEmpty) {
-              return Center(
+      body: RefreshIndicator(
+        onRefresh: refreshList,
+        child: FutureBuilder<List<TransactionModel>>(
+          future: fetch(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
                 child: Text(
-                  "You haven't added Any Data !",
+                  "Opss !!! There is some error !",
                   style: TextStyle(
                     fontSize: 24.0,
-                    color: Constants().deepTealColor,
                   ),
                 ),
               );
             }
-
-            // TODO Get Total Balance
-            getTotalBalance(snapshot.data!);
-
-            return ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(
-                    12.0,
+            if (snapshot.hasData) {
+              if (snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text(
+                    "You haven't added Any Data !",
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: Constants().deepTealColor,
+                    ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          SizedBox(
-                            width: 200.0,
-                            child: Text(
-                              "Welcome ${preferences.getString('name')}",
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.w900,
-                                color: Constants().deepTealColor,
+                );
+              }
+
+              // TODO Get Total Balance
+              getTotalBalance(snapshot.data!);
+
+              return ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(
+                      12.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            SizedBox(
+                              width: 200.0,
+                              child: Text(
+                                "Welcome ${preferences.getString('name')}",
+                                style: TextStyle(
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.w900,
+                                  color: Constants().deepTealColor,
+                                ),
+                                maxLines: 1,
                               ),
-                              maxLines: 1,
+                            ),
+                          ],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              40.0,
+                            ),
+                            color: Constants().deepTealColor,
+                          ),
+                          padding: const EdgeInsets.all(
+                            12.0,
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (context) => const Settings(),
+                                ),
+                              )
+                                  .then((value) {
+                                setState(() {});
+                              });
+                            },
+                            child: Icon(
+                              CupertinoIcons.settings,
+                              size: 20.0,
+                              color: Constants().backgroundColor,
                             ),
                           ),
-                        ],
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            40.0,
-                          ),
-                          color: Constants().deepTealColor,
                         ),
-                        padding: const EdgeInsets.all(
-                          12.0,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(
-                              MaterialPageRoute(
-                                builder: (context) => const Settings(),
-                              ),
-                            )
-                                .then((value) {
-                              setState(() {});
-                            });
-                          },
-                          child: Icon(
-                            CupertinoIcons.settings,
-                            size: 20.0,
-                            color: Constants().backgroundColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // TODO Select Month
-                selectMonth(),
-
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  margin: const EdgeInsets.all(
-                    12.0,
-                  ),
-                  child: Ink(
-                    decoration:  BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[
-                          Constants().deepTealColor,
-                          Constants().deepTealColor.withOpacity(0.7),
-                        ],
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(
-                          24.0,
-                        ),
-                      ),
+                      ],
                     ),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
+                  ),
+
+                  // TODO Select Month
+                  selectMonth(),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    margin: const EdgeInsets.all(
+                      12.0,
+                    ),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Constants().deepTealColor,
+                            Constants().deepTealColor.withOpacity(0.7),
+                          ],
+                        ),
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(
                             24.0,
                           ),
                         ),
-                        // color: Static.PrimaryColor,
                       ),
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 18.0,
-                        horizontal: 8.0,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Total Balance',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              // fontWeight: FontWeight.w700,
-                              color: Constants().backgroundColor,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(
+                              24.0,
                             ),
                           ),
-                          const SizedBox(
-                            height: 12.0,
-                          ),
-                          Text(
-                            'Rs $totalBalance',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 36.0,
-                              letterSpacing: 1.0,
-                              fontWeight: FontWeight.w700,
-                              color: Constants().backgroundColor,
+                          // color: Static.PrimaryColor,
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 18.0,
+                          horizontal: 8.0,
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Total Balance',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                // fontWeight: FontWeight.w700,
+                                color: Constants().backgroundColor,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 12.0,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                cardIncome(
-                                  totalIncome.toString(),
-                                ),
-                                cardExpense(
-                                  totalExpense.toString(),
-                                ),
-                              ],
+                            const SizedBox(
+                              height: 12.0,
                             ),
-                          ),
-                        ],
+                            newTotalBalance > 0 ? Text(
+                              'Rs 1${newTotalBalance + totalBalance}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 36.0,
+                                letterSpacing: 1.0,
+                                fontWeight: FontWeight.w700,
+                                color: Constants().backgroundColor,
+                              ),
+                            ) :newTotalBalance < 0 ? Text(
+                              'Rs 2${totalBalance - newTotalBalance}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 36.0,
+                                letterSpacing: 1.0,
+                                fontWeight: FontWeight.w700,
+                                color: Constants().backgroundColor,
+                              ),
+                            ) : Text(
+                              'Rs 3${totalBalance}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 36.0,
+                                letterSpacing: 1.0,
+                                fontWeight: FontWeight.w700,
+                                color: Constants().backgroundColor,
+                              ),),
+                            const SizedBox(
+                              height: 12.0,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  cardIncome(
+                                    totalIncome.toString(),
+                                  ),
+                                  cardExpense(
+                                    totalExpense.toString(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    "Recent Transactions",
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      color: Constants().deepTealColor,
-                      fontWeight: FontWeight.w900,
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      "Recent Transactions",
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        color: Constants().deepTealColor,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: snapshot.data!.length + 1,
-                  itemBuilder: (context, index) {
-                    TransactionModel dataAtIndex;
-                    try {
-                      dataAtIndex = snapshot.data![index];
-                    } catch (e) {
-                      return Container();
-                    }
-
-                    if (dataAtIndex.date.month == today.month) {
-                      if (dataAtIndex.type == "Income") {
-                        return incomeTile(
-                          dataAtIndex.amount,
-                          dataAtIndex.note,
-                          dataAtIndex.date,
-                          index,
-                        );
-                      } else {
-                        return expenseTile(
-                          dataAtIndex.amount,
-                          dataAtIndex.note,
-                          dataAtIndex.date,
-                          index,
-                        );
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data!.length + 1,
+                    itemBuilder: (context, index) {
+                      TransactionModel dataAtIndex;
+                      try {
+                        dataAtIndex = snapshot.data![index];
+                      } catch (e) {
+                        return Container();
                       }
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-                //
-                const SizedBox(
-                  height: 60.0,
-                ),
-              ],
-            );
-          } else {
-            return const Text(
-              "Loading...",
-            );
-          }
-        },
+
+                      if (dataAtIndex.date.month == today.month) {
+                        if (dataAtIndex.type == "Income") {
+                          return incomeTile(
+                            dataAtIndex.amount,
+                            dataAtIndex.note,
+                            dataAtIndex.date,
+                            index,
+                          );
+                        } else {
+                          return expenseTile(
+                            dataAtIndex.amount,
+                            dataAtIndex.note,
+                            dataAtIndex.date,
+                            index,
+                          );
+                        }
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                  //
+                  const SizedBox(
+                    height: 60.0,
+                  ),
+                ],
+              );
+            } else {
+              return const Text(
+                "Loading...",
+              );
+            }
+          },
+        ),
       ),
 
       // TODO FLOATING ACTION BUTTON

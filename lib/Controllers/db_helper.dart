@@ -18,6 +18,11 @@ class DbHelper {
     box.add(value);
   }
 
+  void calculateTotalBalance(){
+    var totalB = box.getAt(3);
+    print(totalB);
+  }
+
 
   Future deleteData(
       int index,
