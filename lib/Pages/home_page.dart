@@ -134,18 +134,25 @@ class _HomePageState extends State<HomePage> {
 
   getTotalBalance(List<TransactionModel> entireData) {
     print("New Total Balance $newTotalBalance");
+    print("Next Month ${now.month + 1}");
+    print("Today Month ${today.month}");
     totalBalance = 0;
     totalIncome = 0;
     totalExpense = 0;
     for (TransactionModel data in entireData) {
       if (data.date.month == today.month) {
         if (data.type == "Income") {
+          if(newTotalBalance < 0 && newTotalBalance > 0){
+            if(today.month == now.month + 1){
+              totalIncome += data.amount + newTotalBalance;
+            }
+          }
           // totalBalance += data.amount;
           totalIncome += data.amount;
+
         } else {
           // totalBalance -= data.amount;
           totalExpense += data.amount;
-
         }
       }
     }
@@ -157,10 +164,7 @@ class _HomePageState extends State<HomePage> {
     print("else <  ${totalBalance} totalExp ${totalBalance < 0}");
     newTotalBalance = totalBalance;
 
-    // if(totalBalance < 0){
-    //   newTotalBalance = totalBalance;
-    //   print("NewTotalBalance $newTotalBalance");
-    // }
+
   }
 
 
@@ -475,8 +479,42 @@ class _HomePageState extends State<HomePage> {
             InkWell(
               onTap: () {
                 setState(() {
+                  index = 10;
+                  today = DateTime(now.year, now.month - 9, today.day);
+                  print("mama ${now.month - 9}");
+                });
+              },
+              child: Container(
+                height: 40.0,
+                width: MediaQuery.of(context).size.width * 0.2,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    13.0,
+                  ),
+                  color: index == 10 ? Constants().deepTealColor : Colors.white,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  months[now.month - 10],
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: index == 10
+                        ? Constants().backgroundColor
+                        : Constants().deepTealColor,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 6.0,
+            ),
+            InkWell(
+              onTap: () {
+                setState(() {
                   index = 9;
                   today = DateTime(now.year, now.month - 8, today.day);
+                  print("mama ${now.month - 8}");
                 });
               },
               child: Container(
@@ -760,99 +798,99 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               width: 6.0,
             ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  index = 10;
-                  today = DateTime(now.year, now.month + 1, today.day);
-                });
-              },
-              child: Container(
-                height: 40.0,
-                width: MediaQuery.of(context).size.width * 0.2,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    13.0,
-                  ),
-                  color: index == 10 ? Constants().deepTealColor : Colors.white,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  months[now.month],
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
-                    color: index == 10
-                        ? Constants().backgroundColor
-                        : Constants().deepTealColor,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 6.0,
-            ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  index = 11;
-                  today = DateTime(now.year, now.month + 2, today.day);
-                });
-              },
-              child: Container(
-                height: 40.0,
-                width: MediaQuery.of(context).size.width * 0.2,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    13.0,
-                  ),
-                  color: index == 11 ? Constants().deepTealColor : Colors.white,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  months[now.month + 1],
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
-                    color: index == 11
-                        ? Constants().backgroundColor
-                        : Constants().deepTealColor,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 6.0,
-            ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  index = 12;
-                  today = DateTime(now.year, now.month + 3, today.day);
-                });
-              },
-              child: Container(
-                height: 40.0,
-                width: MediaQuery.of(context).size.width * 0.2,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    13.0,
-                  ),
-                  color: index == 12 ? Constants().deepTealColor : Colors.white,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  months[now.month + 2],
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
-                    color: index == 12
-                        ? Constants().backgroundColor
-                        : Constants().deepTealColor,
-                  ),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     setState(() {
+            //       index = 10;
+            //       today = DateTime(now.year, now.month + 1, today.day);
+            //     });
+            //   },
+            //   child: Container(
+            //     height: 40.0,
+            //     width: MediaQuery.of(context).size.width * 0.2,
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(
+            //         13.0,
+            //       ),
+            //       color: index == 10 ? Constants().deepTealColor : Colors.white,
+            //     ),
+            //     alignment: Alignment.center,
+            //     child: Text(
+            //       months[now.month],
+            //       style: TextStyle(
+            //         fontSize: 20.0,
+            //         fontWeight: FontWeight.w600,
+            //         color: index == 10
+            //             ? Constants().backgroundColor
+            //             : Constants().deepTealColor,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   width: 6.0,
+            // ),
+            // InkWell(
+            //   onTap: () {
+            //     setState(() {
+            //       index = 11;
+            //       today = DateTime(now.year, now.month + 2, today.day);
+            //     });
+            //   },
+            //   child: Container(
+            //     height: 40.0,
+            //     width: MediaQuery.of(context).size.width * 0.2,
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(
+            //         13.0,
+            //       ),
+            //       color: index == 11 ? Constants().deepTealColor : Colors.white,
+            //     ),
+            //     alignment: Alignment.center,
+            //     child: Text(
+            //       months[now.month + 1],
+            //       style: TextStyle(
+            //         fontSize: 20.0,
+            //         fontWeight: FontWeight.w600,
+            //         color: index == 11
+            //             ? Constants().backgroundColor
+            //             : Constants().deepTealColor,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   width: 6.0,
+            // ),
+            // InkWell(
+            //   onTap: () {
+            //     setState(() {
+            //       index = 12;
+            //       today = DateTime(now.year, now.month + 3, today.day);
+            //     });
+            //   },
+            //   child: Container(
+            //     height: 40.0,
+            //     width: MediaQuery.of(context).size.width * 0.2,
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(
+            //         13.0,
+            //       ),
+            //       color: index == 12 ? Constants().deepTealColor : Colors.white,
+            //     ),
+            //     alignment: Alignment.center,
+            //     child: Text(
+            //       months[now.month + 2],
+            //       style: TextStyle(
+            //         fontSize: 20.0,
+            //         fontWeight: FontWeight.w600,
+            //         color: index == 12
+            //             ? Constants().backgroundColor
+            //             : Constants().deepTealColor,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(
               width: 6.0,
             ),
@@ -862,8 +900,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
-  // TODO Refresh List
   // TODO Refresh List Function
   Future<Null> refreshList() async {
     await Future.delayed(const Duration(seconds: 1));
@@ -875,11 +911,11 @@ class _HomePageState extends State<HomePage> {
     print("New Total Balance $newTotalBalance");
 
     return Scaffold(
+      backgroundColor: Constants().backgroundColor,
       appBar: AppBar(
         toolbarHeight: 0.0,
         backgroundColor: Constants().deepTealColor,
       ),
-      backgroundColor: Constants().backgroundColor,
       body: RefreshIndicator(
         onRefresh: refreshList,
         child: FutureBuilder<List<TransactionModel>>(
@@ -1022,8 +1058,8 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(
                               height: 12.0,
                             ),
-                            newTotalBalance > 0 ? Text(
-                              'Rs 1${newTotalBalance + totalBalance}',
+                            Text(
+                              'Rs $totalBalance',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 36.0,
@@ -1031,24 +1067,7 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.w700,
                                 color: Constants().backgroundColor,
                               ),
-                            ) :newTotalBalance < 0 ? Text(
-                              'Rs 2${totalBalance - newTotalBalance}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 36.0,
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.w700,
-                                color: Constants().backgroundColor,
-                              ),
-                            ) : Text(
-                              'Rs 3${totalBalance}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 36.0,
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.w700,
-                                color: Constants().backgroundColor,
-                              ),),
+                            ),
                             const SizedBox(
                               height: 12.0,
                             ),
@@ -1154,6 +1173,7 @@ class _HomePageState extends State<HomePage> {
           size: 32.0,
         ),
       ),
+
     );
   }
 }
