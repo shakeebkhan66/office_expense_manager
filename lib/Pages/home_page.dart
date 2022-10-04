@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -129,11 +130,27 @@ class _HomePageState extends State<HomePage> {
   //   }
   // }
 
+  // Belema's Balance Function
+  int getAccumulatedBalance(List<TransactionModel> transactions) {
+    int accumulatedBalance = 0;
+
+    for (var transaction in transactions) {
+      if (transaction.date.month <= today.month) {
+        if (transaction.type == 'Income') {
+          accumulatedBalance += transaction.amount;
+        } else {
+          accumulatedBalance -= transaction.amount;
+        }
+      }
+    }
+
+    return accumulatedBalance;
+  }
 
   // TODO Correct
 
   getTotalBalance(List<TransactionModel> entireData) {
-    print("New Total Balance $newTotalBalance");
+    print("New Total Ba1lance $newTotalBalance");
     print("Next Month ${now.month + 1}");
     print("Today Month ${today.month}");
     totalBalance = 0;
@@ -142,14 +159,13 @@ class _HomePageState extends State<HomePage> {
     for (TransactionModel data in entireData) {
       if (data.date.month == today.month) {
         if (data.type == "Income") {
-          if(newTotalBalance < 0 && newTotalBalance > 0){
-            if(today.month == now.month + 1){
+          if (newTotalBalance < 0 && newTotalBalance > 0) {
+            if (today.month == now.month + 1) {
               totalIncome += data.amount + newTotalBalance;
             }
           }
           // totalBalance += data.amount;
           totalIncome += data.amount;
-
         } else {
           // totalBalance -= data.amount;
           totalExpense += data.amount;
@@ -163,10 +179,7 @@ class _HomePageState extends State<HomePage> {
 
     print("else <  ${totalBalance} totalExp ${totalBalance < 0}");
     newTotalBalance = totalBalance;
-
-
   }
-
 
   // TODO Card Income Widget
   Widget cardIncome(String value) {
@@ -945,7 +958,7 @@ class _HomePageState extends State<HomePage> {
               }
 
               // TODO Get Total Balance
-              getTotalBalance(snapshot.data!);
+              // getTotalBalance(snapshot.data!);
 
               return ListView(
                 children: [
@@ -1059,7 +1072,8 @@ class _HomePageState extends State<HomePage> {
                               height: 12.0,
                             ),
                             Text(
-                              'Rs $totalBalance',
+                              // 'Rs $totalBalance',
+                              'Rs ${getAccumulatedBalance(snapshot.data!)}',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 36.0,
@@ -1074,7 +1088,8 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   cardIncome(
                                     totalIncome.toString(),
@@ -1173,7 +1188,6 @@ class _HomePageState extends State<HomePage> {
           size: 32.0,
         ),
       ),
-
     );
   }
 }
