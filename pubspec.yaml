@@ -45,6 +45,7 @@ dependencies:
   sqflite: ^2.0.0+4
   flutter_spinkit:
   fluttertoast: ^8.0.9
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

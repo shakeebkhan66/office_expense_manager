@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shimmer/shimmer.dart';
 import '../Constants/colors.dart';
 import '../Controllers/db_helper.dart';
 
@@ -13,8 +14,11 @@ class AddExpenseNoGradient extends StatefulWidget {
 class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
   DateTime selectedDate = DateTime.now();
   int? amount;
-  String note = "Expence";
+  String? note;
   String type = "Income";
+  final DateTime _future = DateTime.now().add(const Duration(days: 365));
+
+
 
   List<String> months = [
     "Jan",
@@ -72,14 +76,18 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: Text(
-              "\nADD TRANSACTION",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 25.0,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.0,
-                color: Constants().deepTealColor,
+            child: Shimmer.fromColors(
+              baseColor: Constants().deepTealColor.withOpacity(0.6),
+              highlightColor: Constants().deepTealColor,
+              child: Text(
+                "\nADD TRANSACTION",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.0,
+                  color: Constants().deepTealColor,
+                ),
               ),
             ),
           ),
@@ -242,7 +250,7 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                   if (val) {
                     setState(() {
                       type = "Income";
-                      if (note.isEmpty || note == "Expense") {
+                      if (note!.isEmpty || note == "Expense") {
                         note = 'Income';
                       }
                     });
@@ -268,7 +276,7 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                     setState(() {
                       type = "Expense";
 
-                      if (note.isEmpty || note == "Income") {
+                      if (note!.isEmpty || note == "Income") {
                         note = 'Expense';
                       }
                     });
@@ -333,16 +341,34 @@ class _AddExpenseNoGradientState extends State<AddExpenseNoGradient> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 onPressed: () {
-                  if (amount != null) {
+                  if (amount != null && note != null && selectedDate.year != _future.year) {
                     DbHelper dbHelper = DbHelper();
-                    dbHelper.addData(amount!, selectedDate, type, note);
+                    dbHelper.addData(amount!, selectedDate, type, note!);
                     Navigator.of(context).pop();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      amount == null ? SnackBar(
                         backgroundColor: Colors.red[700],
                         content: const Text(
-                          "Please enter a valid Amount !",
+                          "Please enter a valid Amount && Select the current year not next year!",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ) : note == null ? SnackBar(
+                        backgroundColor: Colors.red[700],
+                        content: const Text(
+                          "Please enter the transaction note !",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ) : SnackBar(
+                        backgroundColor: Colors.red[700],
+                        content: const Text(
+                          "Please select the current year not next year !",
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.white,

@@ -9,6 +9,7 @@ import 'package:office_expense_manager/Pages/setting.dart';
 import 'package:office_expense_manager/Widgets/confirm_dialog.dart';
 import 'package:office_expense_manager/Widgets/info_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../Constants/colors.dart';
 import '../Controllers/db_helper.dart';
 import '../Models/transaction.dart';
@@ -214,12 +215,16 @@ class _HomePageState extends State<HomePage> {
                 color: Constants().backgroundColor,
               ),
             ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w700,
-                color: Constants().backgroundColor,
+            Shimmer.fromColors(
+              baseColor: Colors.white,
+              highlightColor: Constants().backgroundColor,
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w700,
+                  color: Constants().backgroundColor,
+                ),
               ),
             ),
           ],
@@ -259,12 +264,16 @@ class _HomePageState extends State<HomePage> {
               style:
                   TextStyle(fontSize: 14.0, color: Constants().backgroundColor),
             ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w700,
-                color: Constants().backgroundColor,
+            Shimmer.fromColors(
+              baseColor: Colors.white,
+              highlightColor: Constants().backgroundColor,
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w700,
+                  color: Constants().backgroundColor,
+                ),
               ),
             ),
           ],
@@ -958,7 +967,7 @@ class _HomePageState extends State<HomePage> {
               }
 
               // TODO Get Total Balance
-              // getTotalBalance(snapshot.data!);
+              getTotalBalance(snapshot.data!);
 
               return ListView(
                 children: [
@@ -976,14 +985,18 @@ class _HomePageState extends State<HomePage> {
                             ),
                             SizedBox(
                               width: 200.0,
-                              child: Text(
-                                "Welcome ${preferences.getString('name')}",
-                                style: TextStyle(
-                                  fontSize: 24.0,
-                                  fontWeight: FontWeight.w900,
-                                  color: Constants().deepTealColor,
+                              child: Shimmer.fromColors(
+                                baseColor: Constants().deepTealColor.withOpacity(0.6),
+                                highlightColor: Constants().deepTealColor,
+                                child: Text(
+                                  "Welcome ${preferences.getString('name')}",
+                                  style: TextStyle(
+                                    fontSize: 24.0,
+                                    fontWeight: FontWeight.w900,
+                                    color: Constants().deepTealColor,
+                                  ),
+                                  maxLines: 1,
                                 ),
-                                maxLines: 1,
                               ),
                             ),
                           ],
@@ -1071,15 +1084,19 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(
                               height: 12.0,
                             ),
-                            Text(
-                              // 'Rs $totalBalance',
-                              'Rs ${getAccumulatedBalance(snapshot.data!)}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 36.0,
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.w700,
-                                color: Constants().backgroundColor,
+                            Shimmer.fromColors(
+                              baseColor: Colors.greenAccent,
+                              highlightColor: Constants().backgroundColor,
+                              child: Text(
+                                // 'Rs $totalBalance',
+                                'Rs ${getAccumulatedBalance(snapshot.data!)}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 36.0,
+                                  letterSpacing: 1.0,
+                                  fontWeight: FontWeight.w700,
+                                  color: Constants().backgroundColor,
+                                ),
                               ),
                             ),
                             const SizedBox(
